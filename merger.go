@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"path/filepath"
 	"sort"
 	"strings"
 )
@@ -98,7 +99,16 @@ func main() {
 		builder.WriteString("\n\n")
 	}
 
-	err := os.WriteFile(outFile, []byte(builder.String()), 0644)
+	// Получаем директорию из пути
+	dir := filepath.Dir(outFile)
+
+	// Создаём директорию и все недостающие родительские директории
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.WriteFile(outFile, []byte(builder.String()), 0644)
 	if err != nil {
 		panic(err)
 	}
