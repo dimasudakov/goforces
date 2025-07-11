@@ -9,14 +9,22 @@ import (
 	"strings"
 )
 
+var (
+	// исходники (не файлы с решениями задач)
+	sourceFiles = []string{
+		"./inout.go",
+	}
+)
+
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: go run merger.go <output-file>")
 		return
 	}
-	outFile := "./solutions/task_" + os.Args[1] + ".go"
+	taskLetter := os.Args[1]
+	outFile := "./solutions/task_" + taskLetter + ".go"
 
-	files := []string{"inout.go", "main.go"}
+	files := getSrcFilesList(taskLetter)
 
 	var builder strings.Builder
 	builder.WriteString("package main\n\n")
@@ -119,4 +127,10 @@ func main() {
 	)
 
 	fmt.Printf(bold+"task_%s\n"+reset, os.Args[1])
+}
+
+func getSrcFilesList(taskLetter string) []string {
+	result := sourceFiles
+	result = append(result, fmt.Sprintf("./task_%s.go", taskLetter))
+	return result
 }
