@@ -7,6 +7,9 @@ all: merge build run_tests
 
 test: build run_tests
 
+run: build
+	@go run ./solutions/task_$(x).go
+
 merge:
 	@go run ./service/merger.go $(x)
 

@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -102,8 +103,15 @@ func runTest(binPath, input, expectedOutput string) (bool, string, string) {
 		return false, "", expectedOutput
 	}
 
-	got := strings.TrimSpace(stdout.String())
-	want := strings.TrimSpace(expectedOutput)
+	got := normalize(stdout.String())
+	want := normalize(expectedOutput)
 
 	return got == want, got, want
+}
+
+var spaceCollapse = regexp.MustCompile(`\s+`)
+
+// normalize - Заменяет все \n, \t, множественные пробелы и т.д. на один пробел
+func normalize(s string) string {
+	return strings.TrimSpace(spaceCollapse.ReplaceAllString(s, " "))
 }

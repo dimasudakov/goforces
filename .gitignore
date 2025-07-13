@@ -15,3 +15,5 @@ tests/
 *.tmp
 .idea/
 .vscode/
+
+task_*.go
