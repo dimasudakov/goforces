@@ -103,10 +103,10 @@ func runTest(binPath, input, expectedOutput string) (bool, string, string) {
 		return false, "", expectedOutput
 	}
 
-	got := normalize(stdout.String())
-	want := normalize(expectedOutput)
+	got := stdout.String()
+	want := expectedOutput
 
-	return got == want, got, want
+	return normalize(got) == normalize(want), got, want
 }
 
 var spaceCollapse = regexp.MustCompile(`\s+`)

@@ -24,6 +24,7 @@ const (
 	set        = "./set.go"
 	multiset   = "./multiset.go"
 	orderedSet = "./set_ordered.go"
+	math       = "./math.go"
 
 	// only deps
 	rbtree = "./rbtree.go"
@@ -46,6 +47,9 @@ var (
 				rbtree,
 			},
 		},
+		{
+			Name: math,
+		},
 	}
 )
 
@@ -65,7 +69,7 @@ func main() {
 	importsSet := make(map[string]struct{})
 	var codeParts []string
 
-	for _, file := range files {
+	for i, file := range files {
 		f, err := os.Open(file)
 		if err != nil {
 			panic(err)
@@ -74,6 +78,16 @@ func main() {
 		scanner := bufio.NewScanner(f)
 		var codeLines []string
 		inImports := false
+
+		if i == len(files)-1 {
+			// последний файл - это файл с решением
+			solutionDividerLine := fmt.Sprintf(
+				"// %s solution %s",
+				strings.Repeat("=", 50),
+				strings.Repeat("=", 50),
+			)
+			codeLines = append(codeLines, solutionDividerLine, "")
+		}
 
 		for scanner.Scan() {
 			line := scanner.Text()
